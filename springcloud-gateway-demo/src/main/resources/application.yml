@@ -1,0 +1,55 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false  # 开启 Gateway 自动服务注册和发现的功能
+          lower-case-service-id: true  # 将请求路径上的服务名配置为小写
+      #配置路由信息
+      routes:
+        - id: feign-service-pro
+          uri: lb://feign-service-pro # 转发路径， lb 代表 loadbalance， 即从 Eureka
+       #     中获取的服务列表负载均衡器。 feign-service-pro 即服务名称，相当于http://localhost:8082/
+          # 发送到 Gateway 网关上的请求路径映射，此映射匹配的路径都会转发到 uri 上。 具体地址为： lb://feign-service-pro/service/**
+          predicates:
+          - Path=/service/**
+          filters:
+            - StripPrefix=1
+            - AddRequestParameter=id, 0 # 在请求中自动增加一个请求参数，参数名为 id，参数值为 0。可以用于提供固定参数。
+            - AddRequestParameter=name, testFilter # 每个 AddRequestParameter过滤器，只能提供一个请求参数，提供多请求参数，需要定义多个过滤器。
+            - AddRequestHeader=my-header, test-header-value # 在请求中自动增加一个请求头参数，参数名为 my-header，参数值为 test-header-value
+# 请求转发时，会自动过滤请求转发的第一节地址，即 service。最终地址为： lb://feign-service-pro/**
+        - id: feign-service-com
+          uri: lb://feign-service-com  # 转发路径， lb 代表 loadbalance， 即从 Eureka
+            #     中获取的服务列表负载均衡器。 feign-service-pro 即服务名称，相当于http://localhost:8082/
+            # 发送到 Gateway 网关上的请求路径映射，此映射匹配的路径都会转发到 uri 上。 具体地址为： lb://feign-service-pro/service/**
+          predicates:
+            - Path=/client/**
+          filters:
+            - StripPrefix=1
+            - name:  Hystrix # 开启 Hystrix 容错过滤器
+              args:
+                 name: fallbackcmd
+                 fallbackUri: forward:/fallback # 出现服务调用问题，访问的本地路径是什么，也就是本地熔断处理逻辑
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka
+
+
+#服务熔断
+hystrix:
+ command:
+   default:
+    execution:
+     timeout:
+# 如果 enabled 设置为 false，则请求超时交给 ribbon 控制,为 true,则超时作为容错根据
+      enabled: true
+     isolation:
+      thread:
+       timeoutInMilliseconds: 1000 # 超时时间，默认 1000ms

@@ -1,0 +1,17 @@
+spring:
+ cloud:
+    config:
+      uri: http://localhost:8088  # 分布式配置中心服务端访问地址，默认为http://localhost:8888/
+      name: application-service-config # 要读取的配置文件主体命名
+      profile: dev  # 要读取的配置文件扩展环境名， 默认 default
+      label: master   # 在 Gitee 仓库的哪一个分支中读取配置文件， 默认 null，即在 master 分支中读取
+
+
+management:
+ endpoints:
+  web:
+   exposure:
+    include:
+      - refresh # 开启热刷新服务， 也可以在 Gitee 中的配置文件内定义。
+      - info
+      - health

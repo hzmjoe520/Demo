@@ -1,0 +1,17 @@
+server:
+  port: 8761
+spring:
+  application:
+    name: cloud-eureka
+eureka:
+  client:
+    #register-with-eureka: false  单机
+    #fetch-registry: false   单机
+    service-url:
+      # defaultZone: http://localhost:8761/eureka 单机
+       defaultZone: http://localhost:8762/eureka  #集群
+  instance:
+    hostname: eureka01
+  server:
+    enable-self-preservation: false  # 是否开启自我保护， 默认为 true
+    eviction-interval-timer-in-ms: 60000  # 清理间隔，单位是毫秒。默认值为 1 分钟

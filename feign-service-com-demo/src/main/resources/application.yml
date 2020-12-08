@@ -1,0 +1,59 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: feign-service-com
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka
+
+#配置ribbon的超时时间
+ribbon:
+  # 请求连接的超时时间，单位毫秒，默认的时间为 1 秒
+  ConnectTimeout: 1000
+  # 请求处理的超时时间，单位毫秒，默认的时间为 1 秒
+  ReadTimeout: 1000
+
+#负均衡的配置
+feign-service-pro:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule  #采用随机的形式
+
+
+#开启 feign 技术中的 Hystrix 容错处理机制
+feign:
+  hystrix:
+    enabled: true
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "localhost"
+  command:
+    default:
+      execution:
+        timeout:
+          enable: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000
+          #服务熔断
+      fallback:
+        enabled: true # 当远程调用失败或者请求被拒绝，是否会尝试调用 fallback方法 。默认 true
+      circuitBreaker: # 服务熔断（Circuit Breaker）相关配置属性
+        enabled: true # 是否开启熔断器。默认 true
+        requestVolumeThreshold: 20 # 默认 20 个;10s 内请求数大于 20 个时就启动熔断器，当请求符合熔断条件时将触发 fallback 逻辑
+        errorThresholdPercentage: 50 # 请求错误率大于 50%时就熔断，然后 for 循环发起请求，当请求符合熔断条件时将触发
+        sleepWindowInMilliseconds: 5000 # 默认 5 秒;熔断多少秒后去尝试请求
+        forceOpen: false # 是否强制打开熔断器， 默认 false
+        forceClosed: false # 是否强制关闭熔断器， 默认 false
+#Acturtor监控的使用
+management:
+  endpoints:
+   web:
+    exposure:
+     include: # 开启的 actuator 监控路径，默认开启 info 和 health。其他需要手工增加，使用*代表开启所有监控路径。
+      - info
+      - health
+      - hystrix.stream

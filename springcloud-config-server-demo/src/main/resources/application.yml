@@ -1,0 +1,19 @@
+server:
+  port: 8088
+  # Spring Cloud Config 服务端默认端口为 8888，可以自定义修改。此端口为 Spring Cloud Config 客户端默认访问端口。
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/xxx/cloud-config.git
+          username: xxx
+          password: xxx
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka

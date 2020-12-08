@@ -1,0 +1,29 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: ribbon-com
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka
+
+# 设置负载均衡策略。application-service 为设置负载均衡的服务名称,也可以自定义的形式
+#          https://my.oschina.net/u/4278316/blog/3517113  参考自定义负载均衡的方式
+ribbon-pro:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule
+
+
+#服务降级熔断机制
+hystrix:
+  command:
+   default:
+    execution:
+     timeout:
+  # 如果 enabled 设置为 false，则请求超时交给 ribbon 控制,为 true,则超时作为容错根据
+      enabled: true
+     isolation:
+      thread:
+        timeoutInMilliseconds: 1000 # 超时时间，默认 1000ms

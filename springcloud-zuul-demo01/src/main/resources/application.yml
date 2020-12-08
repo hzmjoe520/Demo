@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: zuul-gateway
+server:
+  port: 9020
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka
+
+
+#feign-service-pro
+  #https://docs.spring.io/spring-cloud-netflix/docs/2.2.5.RELEASE/reference/html/#netflix-zuul-reverse-proxy
+# 1 采用URL指定路由方式：###################### :URL 指定
+  # URL 匹配关键字，如果包含关键字就跳转到指定的 URL 中
+#############################
+#2 采用服务 采用服务 名称
+#serviceId
+##规则：zuul.routes.路径名.path
+##规则：zuul.routes.路径名.serviceId=eureka的服务名
+
+## 3 ###################### 路由指定:服务指定 2
+#############################
+#zuul.routes 后面跟着的是服务名，服务名后面跟着的是路径规则，这种配置方式更简单。
+#例如： zuul.routes.feign-service-pro.path=/service/**
+
+#5 路由的添加前缀方式
+#zuul.prefix=/suibian
+ #zuul.routes.e-book-product-provider.path=/product-provider/
+zuul:
+  routes:
+    feign-service-pro:  #这里可以随意命名即可
+       path: /service/**   #匹配这个path路径的跳到对应的url,但仅仅是/service/** 后的**,service去掉。默认是去掉前缀的 ，可用stripPrefix: false 解决
+       #url: http://localhost:8084
+       #serviceId: feign-service-pro  #匹配这个path路径的跳到对应的服务feign-service-pro,但仅仅是/service/** 后的**,service去掉 ，默认是去掉前缀的 ，可用stripPrefix: false 解决
+       stripPrefix: false #不去掉前缀
+

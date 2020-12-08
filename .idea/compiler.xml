@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="springcloud-zuul-demo01" />
+        <module name="springcloud-config-client-demo" />
+        <module name="springcloud-gateway-demo" />
+        <module name="ribbon-com-demo" />
+        <module name="springcloud-demo" />
+        <module name="eureka02" />
+        <module name="eureka01" />
+        <module name="feign-service-com-demo" />
+        <module name="ribbon-pro-demo" />
+        <module name="springcloud-config-server-demo" />
+        <module name="feign-sevice-pro-demo" />
+        <module name="springcloud-zuul-hystrix-demo" />
+        <module name="ribbon-pro-demo02" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ribbon-pro-demo (1)" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="eureka01" options="-parameters" />
+      <module name="eureka02" options="-parameters" />
+      <module name="feign-service-com-demo" options="-parameters" />
+      <module name="feign-sevice-pro-demo" options="-parameters" />
+      <module name="ribbon-com-demo" options="-parameters" />
+      <module name="ribbon-pro-demo" options="-parameters" />
+      <module name="ribbon-pro-demo (1)" options="-parameters" />
+      <module name="ribbon-pro-demo02" options="-parameters" />
+      <module name="springcloud-config-client-demo" options="-parameters" />
+      <module name="springcloud-config-server-demo" options="-parameters" />
+      <module name="springcloud-gateway-demo" options="-parameters" />
+      <module name="springcloud-zuul-demo01" options="-parameters" />
+      <module name="springcloud-zuul-hystrix-demo" options="-parameters" />
+    </option>
+  </component>
+</project>
